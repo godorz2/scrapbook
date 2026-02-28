@@ -133,7 +133,53 @@ def generate_pdf():
                     c.circle(x, y, 0.2, fill=1)  # 圆点超小
                     y += sp
                 x += sp
+        elif style == 'dotted_line':
+            segment_length = 0.5 * cm  # 虚线段长度
+            gap_length = 0.3 * cm      # 间隔长度
 
+            y = mg
+            while y <= h - mg:
+                x = mg
+                is_drawing = True
+                while x < w - mg:
+                    if is_drawing:
+                        next_x = min(x + segment_length, w - mg)
+                        # 绘制多个小圆点组成线段
+                        dot_x = x
+                        while dot_x < next_x:
+                            c.circle(dot_x, y, 0.1, fill=1)  # 小圆点
+                            dot_x += 0.2 * cm
+                    else:
+                        next_x = min(x + gap_length, w - mg)
+                    x = next_x
+                    is_drawing = not is_drawing
+                y += sp
+        elif style == 'wavy_line':
+            import math
+
+            amplitude = 0.3 * cm     # 波峰高度
+            wavelength = 1.5 * cm    # 波长
+            y = mg
+            while y <= h - mg:
+                x = mg
+                points = []
+                while x <= w - mg:
+                    wave_y = y + amplitude * math.sin(2 * math.pi * x / wavelength)
+                    points.append((x, wave_y))
+                    x += 0.1 * cm  # 步长
+                # 绘制波浪线
+                c.lines(points)
+                y += sp
+        elif style == 'random_dots':
+            import random
+
+            num_dots = 300  # 点的数量
+            dot_radius = 0.2  # 点的半径
+
+            for _ in range(num_dots):
+                x = random.uniform(mg, w - mg)
+                y = random.uniform(mg, h - mg)
+                c.circle(x, y, dot_radius, fill=1)
         # 保存PDF
         c.showPage()
         c.save()

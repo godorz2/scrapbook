@@ -154,6 +154,62 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
+            // ========== 新增样式 ==========
+            if (style === 'dotted_line') {
+                // 圆点虚线：用小圆点模拟虚线
+                const segmentLength = spc * 0.6; // 虚线段长度
+                const gapLength = spc * 0.4;     // 间隔长度
+
+                for (let y = mrg; y < ph - mrg; y += spc) {
+                    let x = mrg;
+                    let isDrawing = true;
+                    while (x < pw - mrg) {
+                        if (isDrawing) {
+                            const nextX = Math.min(x + segmentLength, pw - mrg);
+                            // 绘制多个小圆点组成线段
+                            for (let dotX = x; dotX < nextX; dotX += 2) {
+                                ctx.beginPath();
+                                ctx.arc(dotX, y, 1, 0, Math.PI * 2);
+                                ctx.fill();
+                            }
+                        }
+                        x += isDrawing ? segmentLength : gapLength;
+                        isDrawing = !isDrawing;
+                    }
+                }
+            }
+
+            if (style === 'wavy_line') {
+                // 波浪线：用正弦函数生成波浪
+                const amplitude = spc * 0.3;   // 波峰高度
+                const wavelength = spc * 2;    // 波长
+
+                for (let y = mrg; y < ph - mrg; y += spc) {
+                    ctx.beginPath();
+                    for (let x = mrg; x < pw - mrg; x += 1) {
+                        const waveY = y + amplitude * Math.sin((x - mrg) * (2 * Math.PI) / wavelength);
+                        if (x === mrg) {
+                            ctx.moveTo(x, waveY);
+                        } else {
+                            ctx.lineTo(x, waveY);
+                        }
+                    }
+                    ctx.stroke();
+                }
+            }
+
+            if (style === 'random_dots') {
+                // 随机点阵：在页面上随机分布点
+                const numDots = 200; // 点的数量
+                for (let i = 0; i < numDots; i++) {
+                    const x = mrg + Math.random() * (pw - 2 * mrg);
+                    const y = mrg + Math.random() * (ph - 2 * mrg);
+                    ctx.beginPath();
+                    ctx.arc(x, y, 1, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
             // 显示预览
             previewArea.innerHTML = '';
             const wrap = document.createElement('div');
