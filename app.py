@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, send_file
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A5, A6, B6
+from reportlab.lib.pagesizes import A5, A6, B6, A7
 from reportlab.lib.units import cm
 from reportlab.lib.utils import ImageReader
 from PIL import Image, ImageEnhance
@@ -63,7 +63,7 @@ def index():
 def generate_pdf():
     try:
         # 1. 获取所有参数
-        size = request.form.get('size', 'A5')
+        size = request.form.get('size', 'A7')
         style = request.form.get('style', 'grid')
         color = request.form.get('color', '#999999')
         spacing = float(request.form.get('spacing', 0.5))
@@ -75,7 +75,7 @@ def generate_pdf():
         bg_file = request.files.get('bg_image')
 
         # 2. 页面尺寸
-        SIZE_MAP = {"A5": A5, "A6": A6, "B6": B6}
+        SIZE_MAP = {"A5": A5, "A6": A6, "B6": B6, "A7": A7}
         page_size = SIZE_MAP.get(size, A5)
         w, h = page_size
 

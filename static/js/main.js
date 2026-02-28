@@ -72,7 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 case 'A5': pw=400; ph=567; break;
                 case 'A6': pw=283; ph=400; break;
                 case 'B6': pw=333; ph=469; break;
-                default: pw=400; ph=567;
+                case 'A7': pw = 200; ph = 283; break; // 新增 A7 尺寸
+                default: pw = 200; ph = 283; // 默认改为 A7
             }
 
             // 创建画布
